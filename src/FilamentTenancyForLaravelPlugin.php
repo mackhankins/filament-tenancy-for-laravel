@@ -9,6 +9,8 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class FilamentTenancyForLaravelPlugin implements Plugin
 {
+    protected string $identificationMiddleware = InitializeTenancyByUuid::class;
+
     public function getId(): string
     {
         return 'filament-tenancy-for-laravel';
@@ -22,18 +24,21 @@ class FilamentTenancyForLaravelPlugin implements Plugin
             ])
             ->middleware([
                 'universal',
-                InitializeTenancyByUuid::class, // todo make this configurable
+                $this->identificationMiddleware,
                 PreventAccessFromCentralDomains::class,
             ], isPersistent: true);
-
-        //        $domains = tenant()?->domains()->pluck('domain') ?? [];
-        //        $panel->domains($domains);
-
     }
 
     public function boot(Panel $panel): void
     {
-        //
+
+    }
+
+    public function identificationMiddleware(string $identificationMiddleware): static
+    {
+        $this->identificationMiddleware = $identificationMiddleware;
+
+        return $this;
     }
 
     public static function make(): static

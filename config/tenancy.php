@@ -2,13 +2,9 @@
 
 declare(strict_types=1);
 
-use Stancl\Tenancy\Database\Models\Domain;
-
 return [
     'tenant_model' => App\Models\Tenant::class,
-    'id_generator' => Stancl\Tenancy\UUIDGenerator::class,
-
-    'domain_model' => Domain::class,  // todo: add the domain in SaaSykit Tenancy & reference it here?
+    'id_generator' => null,
 
     /**
      * The list of domains hosting your central app.
@@ -47,7 +43,7 @@ return [
          * Tenant database names are created like this:
          * prefix + tenant_id + suffix.
          */
-        'prefix' => 'tenant',
+        'prefix' => 'tenant_',
         'suffix' => '',
 
         /**

@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware([
     'web',
     'universal',
-    \Saasykit\FilamentTenancyForLaravel\Middleware\InitializeTenancyByUuid::class,  // todo: make this configurable
+    App\Providers\TenancyServiceProvider::TENANCY_INITIALIZER,
 ])->group(function () {
 
     // Your Tenant routes go here
