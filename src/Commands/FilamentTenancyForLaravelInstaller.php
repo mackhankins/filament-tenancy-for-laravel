@@ -40,14 +40,21 @@ class FilamentTenancyForLaravelInstaller extends Command
 
         $this->callSilent('vendor:publish', [
             '--provider' => 'Saasykit\FilamentTenancyForLaravel\FilamentTenancyForLaravelServiceProvider',
-            '--tag' => 'config',
+            '--tag' => 'filament-tenancy-for-laravel-config',
         ]);
         $this->info('✔️  Created config/tenancy.php');
+
+        $this->call('vendor:publish', [
+            '--provider' => 'Saasykit\FilamentTenancyForLaravel\FilamentTenancyForLaravelServiceProvider',
+            '--tag' => 'filament-tenancy-for-laravel-migrations',
+        ]);
+
+        $this->info('✔️  Added migrations.');
 
         if (! file_exists(base_path('routes/tenant.php'))) {
             $this->callSilent('vendor:publish', [
                 '--provider' => 'Saasykit\FilamentTenancyForLaravel\FilamentTenancyForLaravelServiceProvider',
-                '--tag' => 'routes',
+                '--tag' => 'filament-tenancy-for-laravel-routes',
             ]);
             $this->info('✔️  Created routes/tenant.php');
         } else {
@@ -56,10 +63,9 @@ class FilamentTenancyForLaravelInstaller extends Command
 
         $this->callSilent('vendor:publish', [
             '--provider' => 'Saasykit\FilamentTenancyForLaravel\FilamentTenancyForLaravelServiceProvider',
-            '--tag' => 'providers',
+            '--tag' => 'filament-tenancy-for-laravel-providers',
         ]);
         $this->info('✔️  Created TenancyServiceProvider.php');
-
 
         if (! is_dir(database_path('migrations/tenant'))) {
             mkdir(database_path('migrations/tenant'));
@@ -67,6 +73,10 @@ class FilamentTenancyForLaravelInstaller extends Command
         }
 
         $this->handleCentralDatabaseModels();
+
+        if ($this->confirm('Do you want to run the migrations now?', true)) {
+            $this->call('migrate');
+        }
 
         $this->comment('✨️ Installed successfully.');
     }

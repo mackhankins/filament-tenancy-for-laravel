@@ -25,15 +25,18 @@ class FilamentTenancyForLaravelServiceProvider extends PackageServiceProvider
 
         $this->publishes([
             __DIR__ . '/../stubs/TenancyServiceProvider.stub.php' => app_path('Providers/TenancyServiceProvider.php'),
-        ], 'providers');
+        ], 'filament-tenancy-for-laravel-providers');
 
         $this->publishes([
             __DIR__ . '/../config/tenancy.php' => config_path('tenancy.php'),
-        ], 'config');
+        ], 'filament-tenancy-for-laravel-config');
 
         $this->publishes([
             __DIR__ . '/../routes/tenant.php' => base_path('routes/tenant.php'),
-        ], 'routes');
+        ], 'filament-tenancy-for-laravel-routes');
+
+        $package
+            ->hasMigrations($this->getMigrations());
 
         $this->commands([
             FilamentTenancyForLaravelInstaller::class,
@@ -120,7 +123,7 @@ class FilamentTenancyForLaravelServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-
+            'add_data_to_tenants_table'
         ];
     }
 }
