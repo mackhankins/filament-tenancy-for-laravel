@@ -123,7 +123,7 @@ class FilamentTenancyForLaravelServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'add_data_to_tenants_table'
+            'add_data_to_tenants_table',
         ];
     }
 }

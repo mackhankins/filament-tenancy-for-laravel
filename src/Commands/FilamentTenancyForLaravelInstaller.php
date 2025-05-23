@@ -83,8 +83,9 @@ class FilamentTenancyForLaravelInstaller extends Command
 
     protected function handleCentralDatabaseModels(): void
     {
-        if (!$this->confirm('Do you want to modify eligible models to use the CentralConnection trait (this is recommended)?', true)) {
+        if (! $this->confirm('Do you want to modify eligible models to use the CentralConnection trait (this is recommended)?', true)) {
             $this->info('Skipping model modification.');
+
             return;
         }
 
@@ -96,6 +97,7 @@ class FilamentTenancyForLaravelInstaller extends Command
         foreach ($files as $file) {
             if ($this->shouldIgnore($file)) {
                 $this->info('Ignoring: ' . basename($file));
+
                 continue;
             }
             $this->modifyModelFile($file);
@@ -107,7 +109,7 @@ class FilamentTenancyForLaravelInstaller extends Command
     private function getPhpFiles($directory)
     {
         $files = [];
-        if (!is_dir($directory)) {
+        if (! is_dir($directory)) {
             return $files;
         }
 
@@ -132,14 +134,14 @@ class FilamentTenancyForLaravelInstaller extends Command
         $updated = false;
 
         // Add "use Stancl\Tenancy\Database\Concerns\CentralConnection;" if missing
-        if (!str_contains($content, 'use Stancl\Tenancy\Database\Concerns\CentralConnection;')) {
+        if (! str_contains($content, 'use Stancl\Tenancy\Database\Concerns\CentralConnection;')) {
             $content = preg_replace('/<\?php\s+namespace [^;]+;/', "$0\n\nuse Stancl\\Tenancy\\Database\\Concerns\\CentralConnection;", $content, 1);
             $updated = true;
         }
 
         // Inject "use CentralConnection;" inside the class
         $pattern = '/class\s+\w+\s+extends\s+\w+(\s+implements\s+[\w, ]+)?\s*{/';
-        if (preg_match($pattern, $content) && !str_contains($content, 'use CentralConnection;')) {
+        if (preg_match($pattern, $content) && ! str_contains($content, 'use CentralConnection;')) {
             $content = preg_replace($pattern, "$0\n    use CentralConnection;", $content, 1);
             $updated = true;
         }
@@ -147,7 +149,7 @@ class FilamentTenancyForLaravelInstaller extends Command
         // Save changes if modified
         if ($updated) {
             file_put_contents($filePath, $content);
-            $this->info("Updated: " . basename($filePath));
+            $this->info('Updated: ' . basename($filePath));
         }
     }
 }

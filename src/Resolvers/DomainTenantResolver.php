@@ -35,7 +35,7 @@ class DomainTenantResolver extends CachedTenantResolver
         $tenant = config('tenancy.tenant_model')::query()
             ->where('domain', $domain)
             ->first();
-        
+
         if ($tenant) {
             $this->setCurrentDomain($tenant, $domain);
 

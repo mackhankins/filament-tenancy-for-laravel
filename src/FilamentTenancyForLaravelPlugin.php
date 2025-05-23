@@ -29,10 +29,7 @@ class FilamentTenancyForLaravelPlugin implements Plugin
             ], isPersistent: true);
     }
 
-    public function boot(Panel $panel): void
-    {
-
-    }
+    public function boot(Panel $panel): void {}
 
     public function identificationMiddleware(string $identificationMiddleware): static
     {
